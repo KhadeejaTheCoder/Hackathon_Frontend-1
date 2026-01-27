@@ -12,6 +12,34 @@
     animation: fadeInDown 0.6s ease;
 }
 
+.admin-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logout-btn {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+}
+
+.logout-btn:hover {
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(239, 68, 68, 0.4);
+}
+
+.logout-btn:active {
+    transform: translateY(0);
+}
+
 .admin-title {
     font-size: 3rem;
     font-weight: 800;

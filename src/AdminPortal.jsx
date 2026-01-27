@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import InventoryApi from './api';
 import './AdminPortal.css';
 
@@ -12,6 +13,7 @@ export default function AdminPortal() {
     const [successMessage, setSuccessMessage] = useState('');
 
     const inventoryClass = new InventoryApi();
+    const navigate = useNavigate();
 
     useEffect(() => {
         // Connect to WebSocket for real-time updates
@@ -101,6 +103,22 @@ export default function AdminPortal() {
         }
     };
 
+    const handleLogout = () => {
+        // Close WebSocket if open
+        if (ws) {
+            ws.close();
+        }
+
+        // Clear auth data
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+        localStorage.removeItem('username');
+        localStorage.removeItem('isAdmin');
+
+        // Redirect to login
+        navigate('/login', { replace: true });
+    };
+
     const formatDate = (timestamp) => {
         return new Date(timestamp).toLocaleString();
     };
@@ -187,9 +205,15 @@ export default function AdminPortal() {
     return (
         <div className="admin-portal">
             <div className="admin-header">
-                <h1 className="admin-title">Order Management Portal</h1>
-                <div className="admin-subtitle">Review and manage customer orders</div>
-            </div>
+    <div className="admin-header-top">
+        <h1 className="admin-title">Order Management Portal</h1>
+        <button className="logout-btn" onClick={handleLogout}>
+            Logout
+        </button>
+    </div>
+    <div className="admin-subtitle">Review and manage customer orders</div>
+</div>
+
 
             {error && (
                 <div className="alert alert-error">

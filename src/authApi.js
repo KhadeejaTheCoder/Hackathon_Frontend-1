@@ -36,7 +36,14 @@ export default class Authentication {
             sessionStorage.setItem("accessToken", response.data.access);
             sessionStorage.setItem("refreshToken", response.data.refresh);
             sessionStorage.setItem("user", response.data.user.username);
-            return true;
+            
+            // Store admin flag
+            sessionStorage.setItem("isAdmin", response.data.user.is_admin || false);
+            
+            return {
+                success: true,
+                isAdmin: response.data.user.is_admin || false
+            };
         }
         return null;
     }

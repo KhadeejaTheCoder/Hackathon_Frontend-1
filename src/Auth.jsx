@@ -82,11 +82,17 @@ export default function Auth() {
         password: formData.password,
       };
 
-      const response = auth.login(data);
+      const response = await auth.login(data);
       
-      if(response){
+      if(response && response.success){
         setIsLoggedIn(true);
-        navigate("/inventory");
+        
+        // Redirect based on admin status
+        if(response.isAdmin) {
+          navigate("/admin");
+        } else {
+          navigate("/inventory");
+        }
       }else{
         setErrors({
           general: "Invalid username or password",
@@ -149,10 +155,10 @@ export default function Auth() {
         password: formData.password,
       };
 
-      const response = auth.register(data);
+      const response = await auth.register(data);
       if(response) {
         setSuccessMessage('Registration successful! Please login to continue.');
-        navigate("/login")
+        switchPage('login');
       } else{
         setErrors({
           general: 'Registration failed. Please try again.'
@@ -366,7 +372,3 @@ return (
     </div>
   );
 }
-
-
-
-
