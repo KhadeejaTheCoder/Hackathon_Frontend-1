@@ -381,38 +381,51 @@ function InlineProductSearch({ rowId, value, onProductSelect }) {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    // Debounced search
-    useEffect(() => {
-        const delayDebounce = setTimeout(() => {
-            if (searchTerm && searchTerm.length >= 2) {
-                searchProducts(searchTerm);
-            } else {
-                setSearchResults([]);
-                setShowDropdown(false);
-            }
-        }, 300); // 300ms delay
+    // // Debounced search
+    // useEffect(() => {
+    //     const delayDebounce = setTimeout(() => {
+    //         if (searchTerm && searchTerm.length >= 2) {
+    //             searchProducts(searchTerm);
+    //         } else {
+    //             setSearchResults([]);
+    //             setShowDropdown(false);
+    //         }
+    //     }, 300); // 300ms delay
 
-        return () => clearTimeout(delayDebounce);
-    }, [searchTerm]);
+    //     return () => clearTimeout(delayDebounce);
+    // }, [searchTerm]);
 
-    const searchProducts = async (query) => {
-        setIsSearching(true);
-        try {
-            const results = await inventoryClass.searchProducts(query);
-            setSearchResults(results || []);
-            setShowDropdown(true);
-            setSelectedIndex(-1);
-        } catch (error) {
-            console.error('Error searching products:', error);
-            setSearchResults([]);
-        } finally {
-            setIsSearching(false);
-        }
-    };
+    // const searchProducts = async (query) => {
+    //     setIsSearching(true);
+    //     try {
+    //         const results = await inventoryClass.searchProducts(query);
+    //         setSearchResults(results || []);
+    //         setShowDropdown(true);
+    //         setSelectedIndex(-1);
+    //     } catch (error) {
+    //         console.error('Error searching products:', error);
+    //         setSearchResults([]);
+    //     } finally {
+    //         setIsSearching(false);
+    //     }
+    // };
 
-    const handleInputChange = (e) => {
+    const handleInputChange = async (e) => {
         const value = e.target.value;
         setSearchTerm(value);
+        setIsSearching(true);
+
+        try {
+            const result = await inventoryClass.searchItems(value);
+            setSearchResults(result);
+            setShowDropdown(true);
+            setSelectedIndex(-1);
+        }catch(error) {
+            console.error("Error searching the product: ", error);
+            setSearchResults([]);
+        }finally{
+            setIsSearching(false);
+        }
     };
 
     const handleProductClick = (product) => {

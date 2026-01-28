@@ -120,13 +120,18 @@ export default class InventoryApi {
             return false;
         }
     }
+
     async searchItems(searchQuery) {
         try {
             const response = await axios.get(
                 this.BASE + "products/search/", {
+                    params: {
+                        search: searchQuery
+                    },
+                    
                     headers: {
                         'Authorization': `Bearer ${this.accessToken}`,
-                        "data-request": searchQuery  // Search query in header
+                        "X-Username": this.username,
                     }
                 }
             );
